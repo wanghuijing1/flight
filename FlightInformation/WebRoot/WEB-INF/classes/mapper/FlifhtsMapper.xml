@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/data/mybatis-3-mapper.dtd">
+<mapper namespace="cn.bdqn.dao.FlightsMapper">
+	<select id="getSelectFlights" resultType="Flights">
+		SELECT * FROM `flights` 
+		<where>
+			<if test="time!='' and time!=null">
+				flightDate=#{time}
+			</if>
+			<if test="takeoffAirportName!=null and takeoffAirportName!=''">
+				and `takeoffAirportId`=(SELECT id FROM `airports` WHERE cityName=#{takeoffAirportName})
+			</if>
+			<if test="landingAirportName!=null and landingAirportName!=''">
+				and `landingAirportId`=(SELECT id FROM `airports` WHERE cityName=#{landingAirportName})
+			</if>
+		</where>
+	</select>
+	<select id="getSelectAirports" resultType="String" parameterType="int">
+		SELECT `airportName` FROM `airports` WHERE id=#{id}
+	</select>
+	<select id="getSelectAirportsTicket" resultType="Flight_ticket" parameterType="int">
+		SELECT * FROM `flight_ticket` WHERE flightId=#{flightId}
+	</select>
+</mapper>
